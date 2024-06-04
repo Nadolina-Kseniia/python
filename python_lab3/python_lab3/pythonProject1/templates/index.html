@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <title>Document</title>
+    <script>
+        function showParameters() {
+            var shape = document.getElementById("shape").value;
+            var parameters = document.getElementById("parameters");
+            var inputs = parameters.getElementsByTagName("input");
+
+            // Hide all inputs initially
+            for (var i = 0; i < inputs.length; i++) {
+                inputs[i].style.display = "none";
+            }
+
+            // Show required inputs based on selected shape
+            if (shape === "cube" || shape === "sphere") {
+                inputs[0].style.display = "block";
+            } else if (shape === "cylinder" || shape === "cone" || shape === "torus" ||shape === "paraboloid" || shape === "hyperboloid" || shape === "ellipsoid") {
+                inputs[0].style.display = "block";
+                inputs[1].style.display = "block";
+            } else if (shape === "parallelepiped" || shape === "trapezoid") {
+                inputs[0].style.display = "block";
+                inputs[1].style.display = "block";
+                inputs[2].style.display = "block";
+            } else {
+                inputs[0].style.display = "block";
+            }
+        }
+
+        // Initialize the form with the correct inputs shown
+        window.onload = function() {
+            showParameters();
+        };
+    </script>
+</head>
+<body>
+    <div style="container">
+        <h1>Объемы геометрических фигур</h1>
+        <form method="POST">
+            <label for="shape">Выберите фигуру:</label>
+            <select class="form-select" name="shape" id="shape" onchange="showParameters()">
+                <option value="cube">Куб</option>
+                <option value="sphere">Сфера</option>
+                <option value="cylinder">Цилиндр</option>
+                <option value="cone">Конус</option>
+                <option value="torus">Тороид</option>
+                <option value="paraboloid">Параболоид</option>
+                <option value="hyperboloid">Гиперболоид</option>
+                <option value="ellipsoid">Элипсоид</option>
+                <option value="parallelepiped">Параллелепипед</option>
+                <option value="trapezoid">Трапеция</option>
+            </select>
+            <br>
+            <label for="parameters">Введите параметры:</label>
+            <div class="row" id="parameters">
+                <div class="col-4">
+                    <input type="text" class="form-control" name="a" id="a" value="{{ a }}">
+                </div>
+                <div class="col-4">
+                    <input type="text" class="form-control" name="b" id="b" value="{{ b }}">
+                </div>
+                <div class="col-4">
+                    <input type="text" class="form-control" name="c" id="c" value="{{ c }}">
+                </div>
+            </div>
+            <br>
+            <label for="precision">Точность:</label>
+            <input type="number" class="form-control" name="precision" id="precision" value="2">
+            <br>
+            <button type="submit" class="btn btn-primary">Вычислить</button>
+        </form>
+
+        <h2>Результат:</h2>
+        <p>Объем: {% if volume %} {{ volume }} {% endif %}</p>
+    </div>
+</body>
+</html>
